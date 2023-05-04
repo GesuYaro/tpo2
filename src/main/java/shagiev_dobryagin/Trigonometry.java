@@ -33,7 +33,7 @@ public class Trigonometry {
     return sin(x, e) / cos(x, e);
   }
 
-  public double ctg(double x, double e) {
+  public double cot(double x, double e) {
     return cos(x, e) / sin(x, e);
   }
 }

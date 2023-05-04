@@ -5,8 +5,8 @@ import java.util.Stack;
 import static java.lang.Math.pow;
 
 public class BigFunc {
-  private final Logarithmometry logarithmometry;
   private final Trigonometry trigonometry;
+  private final Logarithmometry logarithmometry;
   private static final double EPS = 0.001;
 
   public BigFunc() {
@@ -14,7 +14,7 @@ public class BigFunc {
     this.trigonometry = new Trigonometry();
   }
 
-  public BigFunc(Logarithmometry logarithmometry, Trigonometry trigonometry) {
+  public BigFunc(Trigonometry trigonometry, Logarithmometry logarithmometry) {
     this.logarithmometry = logarithmometry;
     this.trigonometry = trigonometry;
   }
@@ -30,7 +30,7 @@ public class BigFunc {
   private double calcTrigonometry(double x) {
     return pow(
       (
-        trigonometry.sec(x, EPS) - trigonometry.ctg(x, EPS) - trigonometry.sec(x, EPS) / trigonometry.cos(x, EPS)
+        trigonometry.sec(x, EPS) - trigonometry.cot(x, EPS) - trigonometry.sec(x, EPS) / trigonometry.cos(x, EPS)
       ) * (
         trigonometry.sec(x, EPS) - trigonometry.tan(x, EPS)
       ),
