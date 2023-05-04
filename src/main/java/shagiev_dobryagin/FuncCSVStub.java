@@ -25,7 +25,7 @@ public class FuncCSVStub {
   }
 
   private static NavigableMap<Double, Double> fetch(File file) {
-    var rows = CsvReader.readCSV(file);
+    var rows = CsvProcessor.readCSV(file);
     var result = new TreeMap<Double, Double>();
 
     rows.forEach(row -> {
