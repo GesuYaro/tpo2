@@ -1,9 +1,15 @@
 package shagiev_dobryagin;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.mockito.ArgumentMatcher;
 
 import static java.lang.Math.abs;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -16,6 +22,34 @@ public class IntegrationTest {
 
   @BeforeAll
   public static void beforeAll() {
+    mockTrigonometry();
+    mockLogarithmometry();
+
+    bigFunc = new BigFunc(trigonometry, logarithmometry);
+  }
+
+  @Order(1)
+  @ParameterizedTest
+  @CsvFileSource(resources = "bigFunc_cases.csv")
+  public void bigFunc(double x, double y) {
+    assertTrue(doubleEquals(bigFunc.calc(3), y));
+  }
+
+  @Order(2)
+  @ParameterizedTest
+  @CsvFileSource(resources = "bigFuncWithTrigonometry_cases.csv")
+  public void bigFuncWithTrigonometry(double x, double y) {
+    assertTrue(doubleEquals(bigFunc.calc(3), y));
+  }
+
+  @Order(3)
+  @ParameterizedTest
+  @CsvFileSource(resources = "bigFuncWithLogarithmometry_cases.csv")
+  public void bigFuncWithLogarithmometry(double x, double y) {
+    assertTrue(doubleEquals(bigFunc.calc(3), y));
+  }
+
+  private static void mockTrigonometry() {
     trigonometrySeries = mock();
     trigonometry = mock();
     var sin = new FuncCSVStub("sin.csv");
@@ -32,7 +66,9 @@ public class IntegrationTest {
     when(trigonometry.cot(any(), any())).thenAnswer(invocation -> cot.calc(invocation.getArgument(0)));
     when(trigonometry.sec(any(), any())).thenAnswer(invocation -> sec.calc(invocation.getArgument(0)));
     when(trigonometry.csc(any(), any())).thenAnswer(invocation -> csc.calc(invocation.getArgument(0)));
+  }
 
+  private static void mockLogarithmometry() {
     var lnStub = new FuncCSVStub("ln.csv");
     var log2Stub = new FuncCSVStub("log2.csv");
     var log3Stub = new FuncCSVStub("log3.csv");
@@ -49,29 +85,13 @@ public class IntegrationTest {
       .thenAnswer(invocation -> log5Stub.calc(invocation.getArgument(1)));
     when(logarithmometry.log(doubleThat(doubleMatcher(10)), any()))
       .thenAnswer(invocation -> log10Stub.calc(invocation.getArgument(1)));
-
-    bigFunc = new BigFunc(trigonometry, logarithmometry);
   }
 
-  @Test
-  @Order(1)
-  public void bigFunc() {
-
-  }
-
-  @Test
-  @Order(2)
-  public void bigFuncWithTrigonometry() {
-
-  }
-
-  @Test
-  @Order(3)
-  public void bigFuncWithLogarithmometry() {
-
+  private static boolean doubleEquals(double d1, double d2) {
+    return abs(d1 - d2) < 0.000001;
   }
 
   private static ArgumentMatcher<Double> doubleMatcher(double value) {
-    return d -> abs(d - value) < 0.000001;
+    return d -> doubleEquals(d, value);
   }
 }
