@@ -9,11 +9,7 @@ public class Trigonometry {
     }
 
     public double cos(double x, double e) {
-        x = Math.abs(x);
-        x %= (2 * Math.PI);
-        if (x > Math.PI) x-= 2*Math.PI;
-        x = Math.abs(x);
-        return trigonometrySeries.cos(x, e);
+        return trigonometrySeries.serializeCos(x, e);
     }
 
     public double sin(double x, double e) {

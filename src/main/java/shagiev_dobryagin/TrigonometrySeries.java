@@ -1,8 +1,12 @@
 package shagiev_dobryagin;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 public class TrigonometrySeries {
 
-    public double cos(double x, double e) {
+    public double serializeCos(double x, double e) {
+        x = prepareX(x);
         double elem;
         double sum = 1;
         long fakt2n = 2;
@@ -14,5 +18,12 @@ public class TrigonometrySeries {
             n++;
         } while (Math.abs(elem) > e);
         return sum;
+    }
+
+    private double prepareX(double x) {
+        x = Math.abs(x);
+        x %= (2 * Math.PI);
+        if (x > Math.PI) x-= 2*Math.PI;
+        return Math.abs(x);
     }
 }
