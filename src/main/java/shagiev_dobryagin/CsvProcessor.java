@@ -33,12 +33,17 @@ public class CsvProcessor {
   }
 
   public static void writeCsv(File file, List<? extends List<String>> rows) {
+    try {
+      if (!file.exists())
+        file.createNewFile();
+    } catch (IOException ignored) {
+    }
     try (var writer = Files.newBufferedWriter(file.toPath(), TRUNCATE_EXISTING)) {
       rows.stream()
         .map(row -> row.get(0) + DELIMITER + row.get(1))
         .forEach(line -> {
           try {
-            writer.append(line);
+            writer.append(line).append("\n");
           } catch (IOException ignored) {
           }
         });
