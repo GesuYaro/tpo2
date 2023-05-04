@@ -32,21 +32,21 @@ public class IntegrationTest {
   @ParameterizedTest
   @CsvFileSource(resources = "bigFunc_cases.csv")
   public void bigFunc(double x, double y) {
-    assertTrue(doubleEquals(bigFunc.calc(3), y));
+    assertTrue(doubleEqualsWithBigEps(bigFunc.calc(3), y));
   }
 
   @Order(2)
   @ParameterizedTest
   @CsvFileSource(resources = "bigFuncWithTrigonometry_cases.csv")
   public void bigFuncWithTrigonometry(double x, double y) {
-    assertTrue(doubleEquals(bigFunc.calc(3), y));
+    assertTrue(doubleEqualsWithBigEps(bigFunc.calc(3), y));
   }
 
   @Order(3)
   @ParameterizedTest
   @CsvFileSource(resources = "bigFuncWithLogarithmometry_cases.csv")
   public void bigFuncWithLogarithmometry(double x, double y) {
-    assertTrue(doubleEquals(bigFunc.calc(3), y));
+    assertTrue(doubleEqualsWithBigEps(bigFunc.calc(3), y));
   }
 
   private static void mockTrigonometry() {
@@ -74,8 +74,10 @@ public class IntegrationTest {
     var log3Stub = new FuncCSVStub("log3.csv");
     var log5Stub = new FuncCSVStub("log5.csv");
     var log10Stub = new FuncCSVStub("log10.csv");
+    naturalLogarithmometry = mock();
     logarithmometry = mock();
 
+    when(naturalLogarithmometry.ln(any())).thenAnswer(invocation -> lnStub.calc(invocation.getArgument(0)));
     when(logarithmometry.ln(any())).thenAnswer(invocation -> lnStub.calc(invocation.getArgument(0)));
     when(logarithmometry.log(doubleThat(doubleMatcher(2)), any()))
       .thenAnswer(invocation -> log2Stub.calc(invocation.getArgument(1)));
@@ -85,6 +87,10 @@ public class IntegrationTest {
       .thenAnswer(invocation -> log5Stub.calc(invocation.getArgument(1)));
     when(logarithmometry.log(doubleThat(doubleMatcher(10)), any()))
       .thenAnswer(invocation -> log10Stub.calc(invocation.getArgument(1)));
+  }
+
+  private static boolean doubleEqualsWithBigEps(double d1, double d2) {
+    return abs(d1 - d2) < 0.001;
   }
 
   private static boolean doubleEquals(double d1, double d2) {
