@@ -8,6 +8,11 @@ public class BigFunc {
   private final Logarithmometry logarithmometry;
   private final Trigonometry trigonometry;
 
+  public BigFunc() {
+    this.logarithmometry = new Logarithmometry();
+    this.trigonometry = new Trigonometry();
+  }
+
   public BigFunc(Logarithmometry logarithmometry, Trigonometry trigonometry) {
     this.logarithmometry = logarithmometry;
     this.trigonometry = trigonometry;
@@ -21,12 +26,12 @@ public class BigFunc {
     }
   }
 
-  public double calcTrigonometry(double x) {
+  private double calcTrigonometry(double x) {
     // TODO
     return 0;
   }
 
-  public double calcLogs(double x) {
+  private double calcLogs(double x) {
     if (x <= 0)
       throw new IllegalArgumentException();
 
@@ -47,6 +52,6 @@ public class BigFunc {
     stack.push(logarithmometry.log(5, x) - logarithmometry.ln(x) + logarithmometry.log(5, x));
     stack.push(stack.pop() / stack.pop());
 
-    return stack.pop() * stack.pop();
+    return -stack.pop() + stack.pop();
   }
 }
