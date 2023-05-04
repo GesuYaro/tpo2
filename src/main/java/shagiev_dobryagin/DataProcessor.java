@@ -11,6 +11,6 @@ public class DataProcessor {
         var y = x.stream()
                 .map(d -> List.of(d.toString(), func.apply(d).toString()))
                 .toList();
-        CsvReader.writeCsv(file, y);
+        CsvProcessor.writeCsv(file, y);
     }
 }
