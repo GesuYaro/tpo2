@@ -25,4 +25,8 @@ public class CsvReader {
 
     return result;
   }
+
+  public static void writeCsv(File file, List<? extends List<String>> rows) {
+
+  }
 }
