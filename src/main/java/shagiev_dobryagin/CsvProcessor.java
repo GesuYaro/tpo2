@@ -2,11 +2,17 @@ package shagiev_dobryagin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class CsvReader {
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
+
+public class CsvProcessor {
+  private static final String DELIMITER = ",";
+
   public static List<? extends List<String>> readCSV(File file) {
     Scanner scanner;
     try {
@@ -19,7 +25,7 @@ public class CsvReader {
 
     while (scanner.hasNextLine()) {
       var line = scanner.nextLine();
-      var row = new ArrayList<>(List.of(line.split(",")));
+      var row = new ArrayList<>(List.of(line.split(DELIMITER)));
       result.add(row);
     }
 
@@ -27,6 +33,16 @@ public class CsvReader {
   }
 
   public static void writeCsv(File file, List<? extends List<String>> rows) {
-
+    try (var writer = Files.newBufferedWriter(file.toPath(), TRUNCATE_EXISTING)) {
+      rows.stream()
+        .map(row -> row.get(0) + DELIMITER + row.get(1))
+        .forEach(line -> {
+          try {
+            writer.append(line);
+          } catch (IOException ignored) {
+          }
+        });
+    } catch (IOException ignored) {
+    }
   }
 }
