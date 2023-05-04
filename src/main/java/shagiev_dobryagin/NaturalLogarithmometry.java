@@ -2,7 +2,7 @@ package shagiev_dobryagin;
 
 import static java.lang.Math.pow;
 
-public class Logarifmometry {
+public class NaturalLogarithmometry {
   private static final double EPS = 0.001;
 
   public double ln(double t) {
@@ -24,9 +24,5 @@ public class Logarifmometry {
     } while (yCur - yNext > eps);
 
     return yNext;
-  }
-
-  public double log(double base, double x) {
-    return ln(x) / ln(base);
   }
 }
