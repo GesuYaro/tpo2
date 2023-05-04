@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
 public class CsvProcessor {
@@ -33,12 +34,13 @@ public class CsvProcessor {
   }
 
   public static void writeCsv(File file, List<? extends List<String>> rows) {
-    try (var writer = Files.newBufferedWriter(file.toPath(), TRUNCATE_EXISTING)) {
+    try (var writer = Files.newBufferedWriter(file.toPath(), CREATE)) {
       rows.stream()
         .map(row -> row.get(0) + DELIMITER + row.get(1))
         .forEach(line -> {
           try {
             writer.append(line);
+            writer.append("\n");
           } catch (IOException ignored) {
           }
         });
