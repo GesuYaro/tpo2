@@ -1,9 +1,6 @@
 package shagiev_dobryagin;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.mockito.ArgumentMatcher;
@@ -20,8 +17,8 @@ public class IntegrationTest {
   private static TrigonometrySeries trigonometrySeries;
   private static NaturalLogarithmometry naturalLogarithmometry;
 
-  @BeforeAll
-  public static void beforeAll() {
+  @BeforeEach
+  public void beforeAll() {
     mockTrigonometry();
     mockLogarithmometry();
 
@@ -39,6 +36,7 @@ public class IntegrationTest {
   @ParameterizedTest
   @CsvFileSource(resources = "bigFuncWithTrigonometry_cases.csv")
   public void bigFuncWithTrigonometry(double x, double y) {
+    trigonometry = new Trigonometry(trigonometrySeries);
     assertTrue(doubleEqualsWithBigEps(bigFunc.calc(3), y));
   }
 
@@ -46,6 +44,16 @@ public class IntegrationTest {
   @ParameterizedTest
   @CsvFileSource(resources = "bigFuncWithLogarithmometry_cases.csv")
   public void bigFuncWithLogarithmometry(double x, double y) {
+    logarithmometry = new Logarithmometry(naturalLogarithmometry);
+    assertTrue(doubleEqualsWithBigEps(bigFunc.calc(3), y));
+  }
+
+  @Order(4)
+  @ParameterizedTest
+  @CsvFileSource(resources = "bigFunc_allModules.csv")
+  public void bigFuncWithAllModules(double x, double y) {
+    trigonometry = new Trigonometry(new TrigonometrySeries());
+    logarithmometry = new Logarithmometry(new NaturalLogarithmometry());
     assertTrue(doubleEqualsWithBigEps(bigFunc.calc(3), y));
   }
 
