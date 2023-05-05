@@ -19,6 +19,7 @@ public class CsvProcessor {
     try {
       scanner = new Scanner(file);
     } catch (FileNotFoundException ignore) {
+      ignore.printStackTrace();
       throw new IllegalArgumentException();
     }
 

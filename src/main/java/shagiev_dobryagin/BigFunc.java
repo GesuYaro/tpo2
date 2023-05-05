@@ -7,7 +7,7 @@ import static java.lang.Math.pow;
 public class BigFunc {
   private final Trigonometry trigonometry;
   private final Logarithmometry logarithmometry;
-  private static final double EPS = 0.001;
+  private static final double EPS = 0.000001;
 
   public BigFunc() {
     this.logarithmometry = new Logarithmometry();

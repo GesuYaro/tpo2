@@ -13,7 +13,7 @@ public class Trigonometry {
   }
 
   public double cos(double x, double e) {
-    return trigonometrySeries.serializeCos(x, e);
+    return trigonometrySeries.decomposeToSeries(x, e);
   }
 
   public double sin(double x, double e) {
@@ -22,11 +22,11 @@ public class Trigonometry {
   }
 
   public double sec(double x, double e) {
-    return 1 / sin(x, e);
+    return 1 / cos(x, e);
   }
 
   public double csc(double x, double e) {
-    return 1 / cos(x, e);
+    return 1 / sin(x, e);
   }
 
   public double tan(double x, double e) {

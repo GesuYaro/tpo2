@@ -1,27 +1,32 @@
 package shagiev_dobryagin;
 
-public class TrigonometrySeries {
+import java.util.function.BiFunction;
 
-  public double serializeCos(double x, double e) {
-    x = prepareX(x);
-    double elem;
-    double sum = 1;
-    long fakt2n = 2;
-    long n = 1;
-    do {
-      elem = Math.pow(-1, n) * Math.pow(x, 2 * n) / fakt2n;
-      fakt2n = fakt2n * (2 * n + 1) * (2 * n + 2);
-      sum += elem;
-      n++;
-    } while (Math.abs(elem) > e);
+public class TrigonometrySeries {
+  private final BiFunction<Double, Integer, Double> cosSeries = (x, n) -> (Math.pow(-1, n) * Math.pow(x, 2 * n)) * getInverseFactorial(2 * n);
+
+  public double decomposeToSeries(double x, double e) {
+    if (Double.isNaN(x) || Double.isInfinite(x)) {
+      return Double.NaN;
+    }
+    double sum = 0;
+    double prev = 0;
+    double curr = Double.MAX_VALUE;
+    int n = 0;
+    while (Math.abs(curr - prev) >= e) {
+      prev = curr;
+      curr = cosSeries.apply(x, n++);
+      sum += curr;
+    }
     return sum;
   }
 
-  private double prepareX(double x) {
-    x = Math.abs(x);
-    x %= (2 * Math.PI);
-    if (x > Math.PI)
-      x -= 2 * Math.PI;
-    return Math.abs(x);
+  private double getInverseFactorial(int n) {
+    double res = 1;
+    for (int i = 1; i <= n; ++i) {
+      res /= i;
+    }
+    return res;
   }
+
 }

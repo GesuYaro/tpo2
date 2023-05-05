@@ -3,7 +3,7 @@ package shagiev_dobryagin;
 import static java.lang.Math.pow;
 
 public class NaturalLogarithmometry {
-  private static final double EPS = 0.001;
+  private static final double EPS = 0.00001;
 
   public double ln(double t) {
     return ln(t, EPS);

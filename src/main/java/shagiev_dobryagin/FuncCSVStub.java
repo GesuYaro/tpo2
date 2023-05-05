@@ -21,7 +21,7 @@ public class FuncCSVStub {
     if(xRight == null) return xLeft.getValue();
     if(xLeft == null ) return xRight.getValue();
 
-    throw new IllegalStateException();
+    return xRight.getKey() - x < x - xLeft.getKey() ? xRight.getValue() : xLeft.getValue();
   }
 
   private static NavigableMap<Double, Double> fetch(File file) {
